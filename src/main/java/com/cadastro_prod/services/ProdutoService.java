@@ -1,11 +1,9 @@
 package com.cadastro_prod.services;
 
 import com.cadastro_prod.modelo.Produto;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,7 +12,8 @@ import java.util.List;
 
 public class ProdutoService {
 
-    private EntityManager em;
+    private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("produto");
+    private EntityManager em = FACTORY.createEntityManager();
 
     public List<Tuple> FornecedorPeloNome(String nomeForncedor) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
