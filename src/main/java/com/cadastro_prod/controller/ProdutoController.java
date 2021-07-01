@@ -1,7 +1,7 @@
 package com.cadastro_prod.controller;
-import com.cadastro_prod.Services.ProdutoService;
 import com.cadastro_prod.modelo.Produto;
 import com.cadastro_prod.repository.ProdutoRepository;
+import com.cadastro_prod.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Tuple;
 import java.util.List;
 
 @RestController
@@ -20,10 +21,6 @@ public class ProdutoController {
 
     @Autowired
     ProdutoRepository produtoRepository;
-    @Autowired
-    ProdutoService produtoService;
-
-
     @Transactional
     @CacheEvict(value = "/produto", allEntries = true)
     @PostMapping("/produto")
@@ -57,8 +54,10 @@ public class ProdutoController {
 
 
     @GetMapping("/produto_por_fornecedor/{nome}")
-    public ResponseEntity<List<Produto>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
-        List<Produto> ProdutoPorFornecedor = produtoService.FornecedorPeloNome(nome);
+    public ResponseEntity<List<Tuple>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
+
+        ProdutoService produtoService = new ProdutoService();
+        List<Tuple> ProdutoPorFornecedor = produtoService.FornecedorPeloNome(nome);
         return ResponseEntity.ok(ProdutoPorFornecedor);
     }
 
