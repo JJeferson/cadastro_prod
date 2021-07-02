@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-
+@Service
 public class ProdutoService {
 
     private static final EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("produto");
