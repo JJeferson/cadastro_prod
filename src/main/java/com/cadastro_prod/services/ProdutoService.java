@@ -1,6 +1,9 @@
 package com.cadastro_prod.services;
 
 import com.cadastro_prod.modelo.Produto;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -9,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+
 
 public class ProdutoService {
 

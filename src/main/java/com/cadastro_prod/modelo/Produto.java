@@ -19,4 +19,15 @@ public class Produto {
     private BigDecimal Valor;
     @ManyToOne
     private GrupoProduto grupoProduto;
+
+    public Produto(){
+
+    }
+    public Produto(String nome,String fornecedor, BigDecimal quantidade, BigDecimal valor, GrupoProduto grupo_Produto){
+        this.Nome=nome;
+        this.Fornecedor=fornecedor;
+        this.Quantidade = quantidade;
+        this.Valor = valor;
+        this.grupoProduto=grupo_Produto;
+    }
 }

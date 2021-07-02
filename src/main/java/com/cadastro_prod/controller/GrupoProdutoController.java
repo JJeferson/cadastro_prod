@@ -21,13 +21,13 @@ public class GrupoProdutoController {
 
 
     @Transactional
-    @CacheEvict(value = "/grupo_produto", allEntries = true)
-    @PostMapping("/grupo_produto")
+    @CacheEvict(value = "/grupoproduto", allEntries = true)
+    @PostMapping("/grupoproduto")
     public ResponseEntity<GrupoProduto> salvaGrupoProduto(@RequestBody GrupoProduto grupoproduto) {
         return ResponseEntity.ok(grupoProdutoRepository.save(grupoproduto));
     }
 
-    @GetMapping("/grupos_de_produtos")
+    @GetMapping("/gruposdeprodutos")
     public ResponseEntity<Page<GrupoProduto>> listaGrupoProdutos(@RequestParam Integer qtde, @RequestParam Integer pagina){
         if(qtde == null || pagina==null){
             return new ResponseEntity(new Error("Parametros qtde e pagina precisam ser informados"), HttpStatus.BAD_REQUEST);
@@ -39,8 +39,8 @@ public class GrupoProdutoController {
     }
 
     @Transactional
-    @CacheEvict(value = "/grupo_produto", allEntries = true)
-    @PutMapping("/grupo_produto")
+    @CacheEvict(value = "/grupoproduto", allEntries = true)
+    @PutMapping("/grupoproduto")
     public ResponseEntity<GrupoProduto> alteraGrupoProduto(@RequestBody GrupoProduto grupoproduto) {
         return ResponseEntity.ok(grupoProdutoRepository.save(grupoproduto));
     }

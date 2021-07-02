@@ -8,8 +8,6 @@
         <!-- Implementação do JPA, no nessa caso Hibernate -->
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- Aqui são listadas todas as entidades -->
-           <class>com.cadastro_prod.modelo.Produto</class>
-           <class>com.cadastro_prod.modelo.GrupoProduto</class>
         <properties>
             <!-- Propriedades JDBC -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
