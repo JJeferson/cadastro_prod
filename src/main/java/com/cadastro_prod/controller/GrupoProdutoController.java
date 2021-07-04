@@ -1,6 +1,8 @@
 package com.cadastro_prod.controller;
 import com.cadastro_prod.modelo.GrupoProduto;
+import com.cadastro_prod.modelo.Produto;
 import com.cadastro_prod.repository.GrupoProdutoRepository;
+import com.cadastro_prod.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
@@ -18,13 +20,26 @@ public class GrupoProdutoController {
 
     @Autowired
     GrupoProdutoRepository grupoProdutoRepository;
+    @Autowired
+    ProdutoRepository produtoRepository;
 
 
     @Transactional
     @CacheEvict(value = "/grupoproduto", allEntries = true)
     @PostMapping("/grupoproduto")
     public ResponseEntity<GrupoProduto> salvaGrupoProduto(@RequestBody GrupoProduto grupoproduto) {
-        return ResponseEntity.ok(grupoProdutoRepository.save(grupoproduto));
+        grupoProdutoRepository.save(grupoproduto);
+        if(grupoproduto.getListaProdutos().size()>0) {
+            for (Produto prodAtual : grupoproduto.getListaProdutos()) {
+                Produto objProd = produtoRepository.findById(prodAtual.getProdutoId());
+                GrupoProduto grupoProdutoSaveProd = grupoproduto;
+                grupoProdutoSaveProd.setListaProdutos(null);
+                objProd.setGrupoProduto(grupoProdutoSaveProd);
+                produtoRepository.save(objProd);
+            }
+        }
+        return ResponseEntity.ok(grupoproduto);
+
     }
 
     @GetMapping("/gruposdeprodutos")
@@ -34,6 +49,14 @@ public class GrupoProdutoController {
         }else {
             Pageable paginacao = PageRequest.of(pagina, qtde);
             Page<GrupoProduto> listaGrupoProdutos = grupoProdutoRepository.findAll(paginacao);
+            for (GrupoProduto grupoProdutoAtual :  listaGrupoProdutos.getContent())
+            if(grupoProdutoAtual.getListaProdutos().size()>0) {
+                    if(grupoProdutoAtual.getListaProdutos().size()>0) {
+                        for (Produto ProdutoAtual : grupoProdutoAtual.getListaProdutos()) {
+                            ProdutoAtual.setGrupoProduto(null);
+                        }
+                }
+            }
             return ResponseEntity.ok(listaGrupoProdutos);
         }
     }
@@ -42,6 +65,16 @@ public class GrupoProdutoController {
     @CacheEvict(value = "/grupoproduto", allEntries = true)
     @PutMapping("/grupoproduto")
     public ResponseEntity<GrupoProduto> alteraGrupoProduto(@RequestBody GrupoProduto grupoproduto) {
-        return ResponseEntity.ok(grupoProdutoRepository.save(grupoproduto));
+        grupoProdutoRepository.save(grupoproduto);
+        if(grupoproduto.getListaProdutos().size()>0) {
+            for (Produto prodAtual : grupoproduto.getListaProdutos()) {
+                Produto objProd = produtoRepository.findById(prodAtual.getProdutoId());
+                GrupoProduto grupoProdutoSaveProd = grupoproduto;
+                grupoProdutoSaveProd.setListaProdutos(null);
+                objProd.setGrupoProduto(grupoProdutoSaveProd);
+                produtoRepository.save(objProd);
+            }
+        }
+        return ResponseEntity.ok(grupoproduto);
     }
 }
