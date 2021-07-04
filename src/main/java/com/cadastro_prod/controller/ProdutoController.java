@@ -1,4 +1,5 @@
 package com.cadastro_prod.controller;
+import com.cadastro_prod.modelo.GrupoProduto;
 import com.cadastro_prod.modelo.Produto;
 import com.cadastro_prod.repository.ProdutoRepository;
 import com.cadastro_prod.services.ProdutoService;
@@ -35,6 +36,11 @@ public class ProdutoController {
         }else {
             Pageable paginacao = PageRequest.of(pagina, qtde);
             Page<Produto> listaProdutos = produtoRepository.findAll(paginacao);
+            if(listaProdutos.getContent().size()>0){
+               for (Produto ProdutoAtual :  listaProdutos.getContent()){
+               ProdutoAtual.getGrupoProduto().setListaProdutos(null);
+               }
+            }
             return ResponseEntity.ok(listaProdutos);
         }
      }
