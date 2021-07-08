@@ -67,7 +67,7 @@ public class ProdutoController {
     @GetMapping("/produto_por_fornecedor/{nome}")
     public ResponseEntity<List<Produto>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
 
-        List<Produto> ProdutoPorFornecedor = produtoService.FornecedorPeloNome2(nome);
+        List<Produto> ProdutoPorFornecedor = produtoService.FornecedorPeloNome(nome);
         return ResponseEntity.ok(ProdutoPorFornecedor);
     }
 

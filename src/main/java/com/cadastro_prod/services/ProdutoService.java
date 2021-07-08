@@ -29,7 +29,7 @@ public  class ProdutoService implements ProdutoRepository {
 
 
 
-    public List<Produto> FornecedorPeloNome2(String nomeForncedor)  {
+    public List<Produto> FornecedorPeloNome(String nomeForncedor)  {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Produto> queryProduto = cb.createQuery(Produto.class);
@@ -41,20 +41,6 @@ public  class ProdutoService implements ProdutoRepository {
         return result;
     }
 
-
-    @Transactional
-    public List<Tuple> FornecedorPeloNome(String nomeForncedor) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Tuple> query = builder.createTupleQuery();
-        Root<Produto> root = query.from(Produto.class);
-
-        query.multiselect(root.get("ProdutoId"),root.get("Nome")).
-        where(builder.and(builder.like(builder.lower(root.get("Fornecedor")), "%" +nomeForncedor.toString().toLowerCase()+"%")));
-
-        List<Tuple> results= em.createQuery(query).getResultList();
-
-        return results;
-    }
 
     @Override
     public Produto findById(long id) {
