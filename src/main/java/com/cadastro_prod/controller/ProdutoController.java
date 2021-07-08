@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Tuple;
 import java.util.List;
+import java.util.spi.ToolProvider;
 
 @RestController
 @RequestMapping(value="/api")
@@ -22,6 +23,10 @@ public class ProdutoController {
 
     @Autowired
     ProdutoRepository produtoRepository;
+    @Autowired
+    ProdutoService produtoService;
+
+
     @Transactional
     @CacheEvict(value = "/produto", allEntries = true)
     @PostMapping("/produto")
@@ -60,10 +65,9 @@ public class ProdutoController {
 
 
     @GetMapping("/produto_por_fornecedor/{nome}")
-    public ResponseEntity<List<Tuple>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
+    public ResponseEntity<List<Produto>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
 
-        ProdutoService produtoService = new ProdutoService();
-        List<Tuple> ProdutoPorFornecedor = produtoService.FornecedorPeloNome(nome);
+        List<Produto> ProdutoPorFornecedor = produtoService.FornecedorPeloNome2(nome);
         return ResponseEntity.ok(ProdutoPorFornecedor);
     }
 
