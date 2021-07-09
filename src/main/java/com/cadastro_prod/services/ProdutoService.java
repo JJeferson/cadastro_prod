@@ -28,7 +28,7 @@ public  class ProdutoService implements ProdutoRepository {
     ProdutoRepository produtoRepository;
 
 
-
+    @Transactional
     public List<Produto> FornecedorPeloNome(String nomeForncedor)  {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
