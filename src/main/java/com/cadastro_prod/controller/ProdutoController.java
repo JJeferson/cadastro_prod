@@ -1,4 +1,5 @@
 package com.cadastro_prod.controller;
+import com.cadastro_prod.DTO.ErroDTO;
 import com.cadastro_prod.modelo.GrupoProduto;
 import com.cadastro_prod.modelo.Produto;
 import com.cadastro_prod.repository.ProdutoRepository;
@@ -14,7 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Tuple;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.List;
+import java.util.Set;
 import java.util.spi.ToolProvider;
 
 @RestController
@@ -31,6 +37,16 @@ public class ProdutoController {
     @CacheEvict(value = "/produto", allEntries = true)
     @PostMapping("/produto")
     public ResponseEntity<Produto> salvaProduto(@RequestBody Produto produto) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator ();
+        Set<ConstraintViolation<Produto>> constraintViolations =
+        validator.validate(produto);
+        if(constraintViolations.size()>0){
+            for (ConstraintViolation error: constraintViolations) {
+                String msgError = error.getMessage();
+                return new ResponseEntity(new Error(msgError), HttpStatus.BAD_REQUEST);
+            }
+        }
         return ResponseEntity.ok(produtoRepository.save(produto));
     }
 
@@ -57,6 +73,16 @@ public class ProdutoController {
     @CacheEvict(value = "/produto", allEntries = true)
     @PutMapping("/produto")
     public ResponseEntity<Produto> alteraProduto(@RequestBody Produto produto) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator ();
+        Set<ConstraintViolation<Produto>> constraintViolations =
+                validator.validate(produto);
+        if(constraintViolations.size()>0){
+            for (ConstraintViolation error: constraintViolations) {
+                String msgError = error.getMessage();
+                return new ResponseEntity(new Error(msgError), HttpStatus.BAD_REQUEST);
+            }
+        }
         return ResponseEntity.ok(produtoRepository.save(produto));
     }
 
@@ -65,8 +91,21 @@ public class ProdutoController {
         List<Produto> ProdutoPorNome = produtoRepository.findByNome(nome);
         return ResponseEntity.ok(ProdutoPorNome);
     }
+/*
+    @GetMapping("/produto_por_fornecedor")
+    public ResponseEntity<String> produtoPorFornecedorTrataErro(){
+    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("É Preciso informar um parametro de pesquisa após o endpoint");
+   }
+*/
 
+        @GetMapping("/produto_por_fornecedor") 
+        public ResponseEntity<ErroDTO> produtoPorFornecedorTrataErro(){
+             ErroDTO erroDTO = new ErroDTO();
+             erroDTO.setErro("É preciso informar alguma coisa após o endpoint como parametro de pesquisa");
+             erroDTO.setHttpStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
 
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(erroDTO);
+        }
     @GetMapping("/produto_por_fornecedor/{nome}")
     public ResponseEntity<List<Produto>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
 
