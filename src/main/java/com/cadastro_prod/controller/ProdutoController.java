@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.spi.ToolProvider;
@@ -51,10 +52,12 @@ public class ProdutoController {
     }
 
     @GetMapping("/produtos")
-    public ResponseEntity<Page<Produto>> listaProdutos(@RequestParam Integer qtde, @RequestParam Integer pagina){
-        if(qtde == null || pagina==null){
-            return new ResponseEntity(new Error("Parametros qtde e pagina precisam ser informados"), HttpStatus.BAD_REQUEST);
-        }else {
+    public ResponseEntity<Page<Produto>> listaProdutos(@RequestParam(value = "qtde", required=false) Integer qtde, @RequestParam(value = "pagina", required=false) Integer pagina){
+
+            if(pagina==null||qtde==null){
+                Error Msg_Erro = new Error("Valores de quantidade e numero da pagina precisam ser informados nos parametros Exemplo: /api/produtos?qtde=20&pagina=0 ");
+                return new ResponseEntity(Msg_Erro, HttpStatus.BAD_REQUEST);
+            }
             Pageable paginacao = PageRequest.of(pagina, qtde);
             Page<Produto> listaProdutos = produtoRepository.findAll(paginacao);
             
@@ -66,7 +69,7 @@ public class ProdutoController {
                 }
             }
             return ResponseEntity.ok(listaProdutos);
-        }
+
      }
 
     @Transactional
@@ -86,6 +89,8 @@ public class ProdutoController {
         return ResponseEntity.ok(produtoRepository.save(produto));
     }
 
+
+
     @GetMapping("/produto/{nome}")
     public ResponseEntity<List<Produto>> produtoPorNome(@PathVariable(value="nome") String nome){
         List<Produto> ProdutoPorNome = produtoRepository.findByNome(nome);
@@ -98,14 +103,14 @@ public class ProdutoController {
    }
 */
 
-        @GetMapping("/produto_por_fornecedor") 
-        public ResponseEntity<ErroDTO> produtoPorFornecedorTrataErro(){
-             ErroDTO erroDTO = new ErroDTO();
-             erroDTO.setErro("É preciso informar alguma coisa após o endpoint como parametro de pesquisa");
-             erroDTO.setHttpStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+    @GetMapping("/produto_por_fornecedor")
+    public ResponseEntity<ErroDTO> produtoPorFornecedorTrataErro(){
+        ErroDTO erroDTO = new ErroDTO();
+        erroDTO.setErro("É preciso informar alguma coisa após o endpoint como parametro de pesquisa");
+        erroDTO.setHttpStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
 
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(erroDTO);
-        }
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(erroDTO);
+    }
     @GetMapping("/produto_por_fornecedor/{nome}")
     public ResponseEntity<List<Produto>> produtoPorFornecedor(@PathVariable(value="nome") String nome){
 
