@@ -41,10 +41,13 @@ public class ProdutoController {
         }else {
             Pageable paginacao = PageRequest.of(pagina, qtde);
             Page<Produto> listaProdutos = produtoRepository.findAll(paginacao);
+            
             if(listaProdutos.getContent().size()>0){
-               for (Produto ProdutoAtual :  listaProdutos.getContent()){
-               ProdutoAtual.getGrupoProduto().setListaProdutos(null);
-               }
+                for (int i = 0; i < listaProdutos.getContent().size(); i++){
+                    if(listaProdutos.getContent().get(i).getGrupoProduto() != null){
+                    listaProdutos.getContent().get(i).getGrupoProduto().setListaProdutos(null);
+                    }  
+                }
             }
             return ResponseEntity.ok(listaProdutos);
         }
