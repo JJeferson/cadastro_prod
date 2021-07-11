@@ -47,8 +47,14 @@ public  class ProdutoService implements ProdutoRepository {
        return produtoRepository.findById(id);
     }
 
+
     @Override
     public List<Produto> findByNome(String Nome) {
+        return null;
+    }
+
+    @Override
+    public Page<Produto> findByFornecedor(String Fornecedor, Pageable pageable) {
         return null;
     }
 

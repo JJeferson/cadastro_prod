@@ -1,6 +1,8 @@
 package com.cadastro_prod.repository;
 
 import com.cadastro_prod.modelo.Produto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,5 +15,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Query("select c from Produto c where c.Nome like %:Nome%")
     public List<Produto> findByNome(String Nome);
+
+    Page<Produto> findByFornecedor(String Fornecedor, Pageable pageable);
 
 }
