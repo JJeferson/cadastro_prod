@@ -47,8 +47,7 @@ public class ProdutoController {
         //recuperando erros do hibernate e exibindo na saida caso erro.
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator ();
-        Set<ConstraintViolation<Produto>> constraintViolations =
-        validator.validate(produto);
+        Set<ConstraintViolation<Produto>> constraintViolations = validator.validate(produto);
         if(constraintViolations.size()>0){
             for (ConstraintViolation error: constraintViolations) {
                 String msgError = error.getMessage();
@@ -85,8 +84,7 @@ public class ProdutoController {
     public ResponseEntity<Produto> alteraProduto(@RequestBody Produto produto) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator ();
-        Set<ConstraintViolation<Produto>> constraintViolations =
-                validator.validate(produto);
+        Set<ConstraintViolation<Produto>> constraintViolations = validator.validate(produto);
         if(constraintViolations.size()>0){
             for (ConstraintViolation error: constraintViolations) {
                 String msgError = error.getMessage();
