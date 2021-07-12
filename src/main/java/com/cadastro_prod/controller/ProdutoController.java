@@ -73,8 +73,12 @@ public class ProdutoController {
                     listaProdutos.getContent().get(i).getGrupoProduto().setListaProdutos(null);
                     }  
                 }
+                return ResponseEntity.ok(listaProdutos);
+            }else{
+                Error Msg_Erro = new Error("Nenhum registro encontrado. ");
+                return new ResponseEntity(Msg_Erro, HttpStatus.NOT_FOUND);
             }
-            return ResponseEntity.ok(listaProdutos);
+
 
      }
 
@@ -99,6 +103,10 @@ public class ProdutoController {
     @GetMapping("/produto/{nome}")
     public ResponseEntity<List<Produto>> produtoPorNome(@PathVariable(value="nome") String nome){
         List<Produto> ProdutoPorNome = produtoRepository.findByNome(nome);
+        if(ProdutoPorNome.size()<0){
+            Error Msg_Erro = new Error("Nenhum registro encontrado. ");
+            return new ResponseEntity(Msg_Erro, HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(ProdutoPorNome);
     }
 /*
@@ -132,7 +140,12 @@ public class ProdutoController {
         List<Produto> ProdutoPorFornecedor = produtoService.FornecedorPeloNome(nome);
         Pageable paginacao = PageRequest.of(pagina, qtde);
         Page<Produto> page = new PageImpl<>(ProdutoPorFornecedor,paginacao,ProdutoPorFornecedor.size());
-        return ResponseEntity.ok(page);
+        if(page.getContent().size()>0) {
+            return ResponseEntity.ok(page);
+        }else{
+            Error Msg_Erro = new Error("Não encontrado.");
+            return new ResponseEntity(Msg_Erro,HttpStatus.NOT_FOUND);
+        }
     }
 
 
