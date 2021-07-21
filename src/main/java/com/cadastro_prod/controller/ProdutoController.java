@@ -70,8 +70,9 @@ public class ProdutoController {
             if(listaProdutos.getContent().size()>0){
                 for (int i = 0; i < listaProdutos.getContent().size(); i++){
                     if(listaProdutos.getContent().get(i).getGrupoProduto() != null){
-                    listaProdutos.getContent().get(i).getGrupoProduto().setListaProdutos(null);
-                    }  
+                 //   listaProdutos.getContent().get(i).getGrupoProduto().setListaProdutos(null);
+                    }
+
                 }
                 return ResponseEntity.ok(listaProdutos);
             }else{

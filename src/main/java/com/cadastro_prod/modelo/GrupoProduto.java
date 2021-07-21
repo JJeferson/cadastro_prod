@@ -1,4 +1,5 @@
 package com.cadastro_prod.modelo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class GrupoProduto {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long GrupoProdutoId;
     private String nome;
-    @OneToMany(mappedBy = "grupoProduto",cascade = CascadeType.REMOVE )
+    @JsonIgnore
+    @OneToMany(mappedBy = "grupoProduto",cascade = CascadeType.REMOVE)
     private List<Produto> ListaProdutos;
 }
