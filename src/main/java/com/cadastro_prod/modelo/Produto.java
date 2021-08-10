@@ -21,6 +21,7 @@ public class Produto {
     private BigDecimal Quantidade;
     private BigDecimal Valor;
     @ManyToOne
+    @JoinColumn(name="cart_id", nullable=false)
     private GrupoProduto grupoProduto;
 
     public Produto(){
